@@ -1,0 +1,27 @@
+---
+# tasks file for httpd
+- name: install httpd
+  yum: name=httpd state=latest
+
+- name: create sites directories
+  file: path={{item}} state=directory
+  with_items: "{{httpd_dirs}}"
+
+- name: create sites-available directories
+  file: path={{item}} state=directory
+  with_items: "{{httpd_dirs}}"
+
+- name: create sites-enabled directories
+  file: path={{item}} state=directory
+  with_items: "{{sites_enabled}}"
+
+- name: copy an index.htmk
+  template: src=index.html.j2 dest={{httpd_docroot}}/index.html
+
+- name: copy httpd configuration
+  template: src=httpd.conf-RedHat.j2 dest={{httpd_config}}
+  notify: restart httpd
+
+- name: start httpd service
+  service: name=httpd state=started enabled=yes
+

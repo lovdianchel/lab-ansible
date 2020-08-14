@@ -1,0 +1,10 @@
+---
+  - name: install ntp
+    yum: name=chrony state=latest
+  
+  - name: copy chronyd template
+    template: src=chrony.conf.j2 dest=/etc/chrony.conf
+    notify: restart chronyd
+
+  - name: start chronyd
+    service: name=chronyd state=started

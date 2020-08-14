@@ -1,0 +1,19 @@
+---
+- name: apply the common configuration to all hosts
+  hosts: all
+
+  roles:
+  - common
+
+- name: apply the httpd
+  hosts: web1
+
+  roles:
+  - httpd
+  - web
+
+- name: apply the database configuration
+  hosts: db1
+  
+  roles:
+  - mariadb
